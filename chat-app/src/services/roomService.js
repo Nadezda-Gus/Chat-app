@@ -1,5 +1,5 @@
-import prisma from '.../prisma/prismaClient.js'
-import AppError from '.../utils/appError.js'
+import prisma from '../prisma/prismaClient.js'
+import AppError from '../utils/appError.js'
 
 // Поиск пользователя
 async function getUserBySupabaseId(supabaseId) {

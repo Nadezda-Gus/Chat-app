@@ -1,6 +1,6 @@
-import supabase from '.../utils/supabase.js';
-import prisma from '.../prisma/prismaClient.js';
-import AppError from '.../utils/appError.js';
+import supabase from '../utils/supabase.js';
+import prisma from '../prisma/prismaClient.js';
+import AppError from '../utils/appError.js';
 
 // Регистрация нового пользователя
 export async function register(email, password, name) {
