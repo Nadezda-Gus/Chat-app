@@ -1,0 +1,66 @@
+// Настройка генератора Prisma Client
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+// Подключение к PostgreSQL
+datasource db {
+  provider = "postgresql"
+}
+
+// Модель пользователя (связь с Supabase Auth)
+model User {
+  id          String        @id @default(cuid())
+  supabaseId  String        @unique @map("supabase_id")
+  email       String        @unique
+  name        String?
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  messages    Message[]
+  roomMembers RoomMember[]
+
+  @@map("users")
+}
+
+// Модель сообщения
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+  senderId  String   @map("sender_id")
+  roomId    String   @map("room_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([roomId])
+  @@index([senderId])
+  @@map("messages")
+}
+
+// Модель комнаты чата
+model Room {
+  id          String        @id @default(cuid())
+  name        String        @unique
+  createdAt   DateTime      @default(now()) @map("created_at")
+
+  messages    Message[]
+  roomMembers RoomMember[]
+
+  @@map("rooms")
+}
+
+// Связующая таблица многие-ко-многим
+model RoomMember {
+  userId    String   @map("user_id")
+  roomId    String   @map("room_id")
+  joinedAt  DateTime @default(now()) @map("joined_at")
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roomId])
+  @@map("room_members")
+}
