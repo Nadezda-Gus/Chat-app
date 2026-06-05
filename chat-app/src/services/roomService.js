@@ -39,9 +39,9 @@ export async function joinRoom(roomId, supabaseId) {
     if (!room) throw new AppError('Комната не найдена', 404)
 
     const existing = await prisma.roomMember.findUnique({
-        where: { userId: user.id, roomId }
+        where: { userId_roomId: { userId: user.id, roomId } },
     })
-    if (existing) throw new AppError('Вы уже в этой комнате', 400)
+    if (existing) return existing
 
     return prisma.roomMember.create({ data: { roomId, userId: user.id } })
 }
@@ -54,4 +54,21 @@ export async function leaveRoom(roomId, supabaseId) {
     })
     if (!member) throw new AppError('Вы не в этой комнате', 400)
     return prisma.roomMember.delete({ where: { userId: user.id, roomId } })
+}
+
+// Получение списка ID комнат, в которых состоит пользователь
+export async function getMyRooms(supabaseId) {
+    const user = await getUserBySupabaseId(supabaseId)
+    const members = await prisma.roomMember.findMany({
+        where: { userId: user.id },
+        select: { roomId: true },
+    })
+    return members.map(m => m.roomId)
+}
+
+// Получение информации о комнате по её ID
+export async function getRoomById(id) {
+    const room = await prisma.room.findUnique({ where: { id } })
+    if (!room) throw new AppError('Комната не найдена', 404)
+    return room
 }

@@ -10,6 +10,19 @@ export async function getRooms(req, res, next) {
     }
 }
 
+// Контроллер для получения списка ID комнат текущего пользователя
+export async function getMyRooms(req, res, next) {
+    try {
+        // Получаем ID комнат пользователя через сервис комнат, передавая Supabase ID из req.user
+        const roomIds = await roomService.getMyRooms(req.user.sub)
+        // Отправляем успешный ответ с массивом ID комнат
+        res.status(200).json({ roomIds })
+    } catch (error) {
+        // Передаем ошибку в middleware обработки ошибок
+        next(error)
+    }
+}
+
 // Получить комнату по ID
 export async function getRoomById(req, res, next) {
     try {
@@ -36,26 +49,6 @@ export async function deleteRoom(req, res, next) {
     try {
         await roomService.deleteRoom(req.params.id)
         res.status(204).send() // 204 = No Content (успешно, тело ответа пустое)
-    } catch (error) {
-        next(error)
-    }
-}
-
-// Войти в комнату
-export async function joinRoom(req, res, next) {
-    try {
-        await roomService.joinRoom(req.params.id, req.user.sub)
-        res.status(200).json({ message: 'Вы вошли в комнату' }) // успех с сообщением
-    } catch (error) {
-        next(error)
-    }
-}
-
-// Покинуть комнату
-export async function leaveRoom(req, res, next) {
-    try {
-        await roomService.leaveRoom(req.params.id, req.user.sub)
-        res.status(200).json({ message: 'Вы покинули комнату' }) // успех с сообщением
     } catch (error) {
         next(error)
     }

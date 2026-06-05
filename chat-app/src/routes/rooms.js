@@ -18,10 +18,7 @@ router.post('/', authenticate, validate(createRoomSchema), roomController.create
 // DELETE /rooms/:id - удалить комнату (требуется авторизация)
 router.delete('/:id', authenticate, roomController.deleteRoom)
 
-// POST /rooms/:id/join - войти в комнату (требуется авторизация)
-router.post('/:id/join', authenticate, roomController.joinRoom)
+// GET /rooms/my - получить список ID комнат текущего пользователя (требуется авторизация)
+router.get('/my', authenticate, roomController.getMyRooms)
 
-// DELETE /rooms/:id/leave - выйти из комнаты (требуется авторизация)
-router.delete('/:id/leave', authenticate, roomController.leaveRoom)
-
-export default router
+export default routerы
