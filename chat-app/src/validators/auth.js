@@ -8,12 +8,13 @@ export function validate(schema) {
         const result = schema.safeParse(req.body)
 
         if (!result.success) {
+            const errorMessage = result.error?.errors?.[0]?.message || "Invalid request data";
             // Если ошибка - возвращаем первое сообщение об ошибке
-            return next(new AppError(result.error.errors[0].message, 400));
+            return next(new AppError(errorMessage, 400));
         }
 
         // Если всё ок - заменяем req.body на валидированные данные
-        req.body = result.data
+        req.body = result.data;
         next();
     };
 }
@@ -30,6 +31,3 @@ export const loginSchema = z.object({
     email: z.email(), // Обязательный email
     password: z.string().min(8), // Минимум 8 символов
 });
-
-router.post('/logout', authenticate, authController.logout)
-router.get('/me', authenticate, authController.getMe)

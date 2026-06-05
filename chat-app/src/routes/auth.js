@@ -14,4 +14,11 @@ router.post('/login', validate(loginSchema), authController.login);
 // Маршрут выхода (требует авторизации)
 router.post('/logout', authenticate, authController.logout);
 
+
+// POST /logout - выход пользователя из системы (требуется авторизация)
+router.post('/logout', authenticate, authController.logout)
+
+// GET /me - получение данных текущего авторизованного пользователя (требуется авторизация)
+router.get('/me', authenticate, authController.getMe)
+
 export default router; // Экспорт роутера
