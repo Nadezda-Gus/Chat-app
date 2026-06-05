@@ -7,11 +7,13 @@
     <title>Chat App</title>
     <script scr="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Активная вкладка */
         .tab-active {
             background-color: #5865f2;
             color: white;
         }
 
+        /* Неактивная вкладка */
         .tab-inactive {
             color: #949ba4;
         }
@@ -24,7 +26,7 @@
 
         <h1 class="text-white text-2xl font-bold text-center mb-6">Chat App</h1>
 
-
+        <!-- Переключение между входом и регистрацией -->
         <div class="flex bg-[#1e1f22] rounded-md p-1 mb-6">
             <button id="tab-login" class="flex-1 py-2 rounded text-sm font-medium transition-colors tab-active">
                 Войти
@@ -34,26 +36,32 @@
             </button>
         </div>
 
+        <!-- Форма авторизации/регистрации -->
         <form id="auth-form" class="flex flex-col gap-4">
+            <!-- Поле имени (только для регистрации) -->
             <div id="field-name" class="hidden flex flex-col gap-1">
                 <label class="text-[#b5bac1] text-xs font-semibold uppercase tracking-wide">Имя</label>
                 <input id="input-name" type="text" placeholder="Ваше имя"
                     class="bg-[#1e1f22] text-white rounded px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#5865f2]" />
             </div>
 
+            <!-- Поле email -->
             <div class="flex flex-col gap-1">
                 <label class="text-[#b5bac1] text-xs font-semibold uppercase tracking-wide">Email</label>
                 <input id="input-email" type="email" placeholder="example@mail.com"
                     class="bg-[#1e1f22] text-white rounded px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#5865f2]" />
             </div>
+            <!-- Поле пароля -->
             <div class="flex flex-col gap-1">
                 <label class="text-[#b5bac1] text-xs font-semibold uppercase tracking-wide">Napon</label>
                 <input id="input-password" type="password" placeholder="●●●●●●●●"
                     class="bg-[#1e1f22] text-white rounded px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#5865f2]">
             </div>
 
+            <!-- Сообщение об ошибке -->
             <p id="auth-error" class="text-red-400 text-sm hidden"></p>
 
+            <!-- Кнопка отправки формы -->
             <button type="submit"
                 class="bg-[#5865f2] hover:bg-[#4752c4] text-white font-semibold py-2 rounded transition-colors">
                 Войти
@@ -63,6 +71,7 @@
 
     </div>
 
+    <!-- Подключение JavaScript модулей -->
     <script src="/js/api.js"></script>
     <script src="/js/ui.js"></script>
     <script src="/js/main.js"></script>
